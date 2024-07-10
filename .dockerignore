@@ -1,0 +1,27 @@
+# Ignore build and log files, dependencies
+frontend/.next
+frontend/node_modules
+frontend/out
+backend/_build
+backend/deps
+*.log
+
+# Ignore environment files
+*.env
+*.env.local
+*.env.development
+*.env.production
+*.env.test
+
+# Ignore Docker files
+.dev
+Dockerfile
+docker-compose.yml
+
+# Ignore editor and system-specific files
+*.swp
+*~
+.vscode
+.idea
+.DS_Store
+*.iml
