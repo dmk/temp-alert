@@ -25,3 +25,9 @@ docker-compose.yml
 .idea
 .DS_Store
 *.iml
+
+# Ignore files used for local developmenmt
+package.json
+package-lock.json
+node_modules
+.dev
