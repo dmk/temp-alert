@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 async function rewrites() {
   return [
     {
@@ -11,10 +14,15 @@ if (process.env.NODE_ENV === 'production') {
   rewrites = () => [];
 }
 
+const version = readFileSync(join(process.cwd(), 'VERSION'), 'utf8').trim();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  env: {
+    APP_VERSION: version,
+  },
   rewrites,
 };
 

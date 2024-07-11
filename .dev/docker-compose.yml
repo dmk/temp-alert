@@ -21,5 +21,6 @@ services:
     ports:
       - "4000:4000"
     environment:
+      # yeah it's just for development no worries
       TA_SECRET_KEY_BASE: yNzhTd/NjNSCeo9bGt/073Dj0ut/t87kfQ0jTddrtoeiB7MObdYo/AdpaiKS0xCl
       TA_ALERTMANAGER_URL: http://alertmanager:9093/
