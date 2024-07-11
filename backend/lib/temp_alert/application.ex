@@ -9,17 +9,21 @@ defmodule TempAlert.Application do
   def start(_type, _args) do
     children = [
       TempAlertWeb.Telemetry,
-      # TempAlert.Repo,
       {DNSCluster, query: Application.get_env(:temp_alert, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: TempAlert.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: TempAlert.Finch},
+
+      # Start the Alerts Agent
+      TempAlert.AlertsAgent,
+
+      # Start the job sending alerts
+      TempAlert.Jobs.SendAlerts,
+
       # Start a worker by calling: TempAlert.Worker.start_link(arg)
       # {TempAlert.Worker, arg},
       # Start to serve requests, typically the last entry
       TempAlertWeb.Endpoint,
-      # Start the Alerts Agent
-      TempAlert.AlertsAgent
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
