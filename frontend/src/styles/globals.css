@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.MuiContainer-root {
+  max-width: 1024px;
+}
+
+/* Overwrite MuiListItem-root */
+.MuiListItem-root {
+  transition: background-color .05s ease-in-out;
+  border-radius: 4px;
+}
+
+.MuiListItem-root:hover {
+  background-color: rgba(0, 0, 0, 0.08); /* Adjust this color as needed */
+}
+
+.MuiIconButton-root.delete-button {
+  display: none;
+  transition: .05s;
+}
+
+.MuiListItem-root:hover .MuiIconButton-root.delete-button {
+  display: inline-flex;
+}

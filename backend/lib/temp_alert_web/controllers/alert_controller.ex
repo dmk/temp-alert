@@ -5,7 +5,6 @@ defmodule TempAlertWeb.AlertController do
 
   def create(conn, %{
         "instance" => instance,
-        "alert_instance" => alert_instance,
         "message" => message,
         "notify_at" => notify_at
       }) do
@@ -15,7 +14,6 @@ defmodule TempAlertWeb.AlertController do
     alert = %Alert{
       id: id,
       instance: instance,
-      alert_instance: alert_instance,
       message: message,
       notify_at: notify_at,
       timestamp: timestamp

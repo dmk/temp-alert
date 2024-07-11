@@ -3,7 +3,6 @@ defmodule TempAlert.Schemas.Alert do
            only: [
              :id,
              :instance,
-             :alert_instance,
              :message,
              :timestamp,
              :notify_at
@@ -11,7 +10,6 @@ defmodule TempAlert.Schemas.Alert do
   defstruct [
     :id,
     :instance,
-    :alert_instance,
     :message,
     :timestamp,
     :notify_at
