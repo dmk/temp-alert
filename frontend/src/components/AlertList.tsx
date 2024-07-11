@@ -38,21 +38,25 @@ const AlertList: React.FC = () => {
   return (
     <Container sx={{maxWidth: '512px'}}>
       <Typography variant="h5">Planned Alerts</Typography>
-      <List>
-        {data.map((alert) => (
-          <ListItem
-            key={alert.id}
-            secondaryAction={
-              <DeleteButton id={alert.id} />
-            }
-          >
-            <ListItemText
-              primary={alert.message}
-              secondary={`Instance: ${alert.instance} | Notification At: ${new Date(alert.notify_at).toLocaleString()}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {data.length > 0 ? (
+        <List>
+          {data.map((alert) => (
+            <ListItem
+              key={alert.id}
+              secondaryAction={
+                <DeleteButton id={alert.id} />
+              }
+            >
+              <ListItemText
+                primary={alert.message}
+                secondary={`Instance: ${alert.instance} | Notification At: ${new Date(alert.notify_at).toLocaleString()}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <Typography>No alerts planned yet.</Typography>
+      )}
     </Container>
   );
 };

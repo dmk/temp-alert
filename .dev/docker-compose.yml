@@ -14,3 +14,12 @@ services:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
     ports:
       - "9093:9093"
+
+  temp-alert:
+    build: ..
+    container_name: temp-alert
+    ports:
+      - "4000:4000"
+    environment:
+      TA_SECRET_KEY_BASE: yNzhTd/NjNSCeo9bGt/073Dj0ut/t87kfQ0jTddrtoeiB7MObdYo/AdpaiKS0xCl
+      TA_ALERTMANAGER_URL: http://alertmanager:9093/
