@@ -25,5 +25,5 @@ jobs:
       working-directory: backend
 
     - name: Run Credo
-      run: mix credo --strict
+      run: mix lint
       working-directory: frontend
