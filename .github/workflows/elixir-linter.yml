@@ -22,6 +22,8 @@ jobs:
 
     - name: Install dependencies
       run: mix deps.get
+      working-directory: backend
 
     - name: Run Credo
       run: mix credo --strict
+      working-directory: frontend
