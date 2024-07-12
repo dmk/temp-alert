@@ -47,6 +47,7 @@ defmodule TempAlert.MixProject do
       {:bandit, "~> 1.5"},
       {:cors_plug, "~> 3.0"},
       {:httpoison, "~> 2.2"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
     ]
   end
 
