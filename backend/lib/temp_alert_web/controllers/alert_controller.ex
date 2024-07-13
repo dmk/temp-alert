@@ -1,7 +1,7 @@
 defmodule TempAlertWeb.AlertController do
   use TempAlertWeb, :controller
-  alias TempAlert.Storage
   alias TempAlert.Schemas.Alert
+  alias TempAlert.Storage
 
   def create(conn, %{
         "instance" => instance,
