@@ -48,6 +48,8 @@ defmodule TempAlert.MixProject do
       {:cors_plug, "~> 3.0"},
       {:httpoison, "~> 2.2"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:redix, "~> 1.5"},
+      {:uuid, "~> 1.1"},
     ]
   end
 

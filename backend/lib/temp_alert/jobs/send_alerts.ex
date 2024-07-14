@@ -23,7 +23,6 @@ defmodule TempAlert.Jobs.SendAlerts do
   use GenServer
   alias TempAlert.Storage
   alias TempAlert.Utils.Alertmanager
-  alias TempAlert.Utils.DateTimeHelper
 
   @doc """
   Starts the GenServer.
@@ -64,26 +63,10 @@ defmodule TempAlert.Jobs.SendAlerts do
     {:noreply, state}
   end
 
-  @doc """
-  Schedules the next execution of the work.
-
-  ## Examples
-
-      iex> TempAlert.Jobs.SendAlerts.schedule_work()
-      :ok
-  """
   defp schedule_work do
     Process.send_after(self(), :work, :timer.seconds(10))
   end
 
-  @doc """
-  Retrieves due alerts and sends them.
-
-  ## Examples
-
-      iex> TempAlert.Jobs.SendAlerts.send_due_alerts()
-      :ok
-  """
   defp send_due_alerts do
     now = DateTime.utc_now()
     due_alerts = Storage.get_due_alerts(now)

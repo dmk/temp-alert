@@ -24,7 +24,7 @@ defmodule TempAlertWeb.AlertController do
   end
 
   def index(conn, _params) do
-    alerts = Storage.get_all_alerts()
+    alerts = Storage.get_all_alerts(nil)
     json(conn, alerts)
   end
 

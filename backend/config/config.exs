@@ -7,6 +7,15 @@
 # General application configuration
 import Config
 
+defmodule TempAlert.ConfigHelper do
+  def storage_backend do
+    case System.get_env("TA_STORAGE_BACKEND") do
+      "redis" -> TempAlert.Storage.RedisStorage
+      _ -> TempAlert.Storage.AgentStorage
+    end
+  end
+end
+
 config :temp_alert,
   ecto_repos: [TempAlert.Repo],
   generators: [timestamp_type: :utc_datetime]
@@ -39,8 +48,13 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :temp_alert, TempAlert.Scheduler,
-  jobs: []
+# Pick storage backend
+config :temp_alert, :storage, TempAlert.ConfigHelper.storage_backend()
+
+config :temp_alert, :redis,
+  host: System.get_env("TA_REDIS_HOST", "localhost"),
+  port: String.to_integer(System.get_env("TA_REDIS_PORT", "6379")),
+  password: System.get_env("TA_REDIS_PASSWORD")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

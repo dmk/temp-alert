@@ -1,42 +1,42 @@
 defmodule TempAlert.Storage do
   @moduledoc """
-  The `TempAlert.Storage` module provides functions to manage alerts stored in the `AlertsAgent`.
-
-  This module serves as an interface to add, retrieve, delete, and filter alerts based on their notification time.
-  It abstracts the underlying storage mechanism and provides a simple API for interacting with alerts.
-
-  ## Functions
-
-    - `add_alert/1`: Adds a new alert to the storage.
-    - `get_alert/1`: Retrieves an alert by its ID.
-    - `get_all_alerts/0`: Retrieves all alerts from the storage.
-    - `delete_alert/1`: Deletes an alert by its ID.
-    - `get_due_alerts/1`: Retrieves alerts that are due based on the provided time.
-
-  ## Examples
-
-      iex> alert = %TempAlert.Schemas.Alert{id: "1", instance: "example", message: "Test", timestamp: "2024-07-12T00:00:00Z", notify_at: "2024-07-13T00:00:00Z"}
-      iex> TempAlert.Storage.add_alert(alert)
-      :ok
-
-      iex> TempAlert.Storage.get_alert("1")
-      %TempAlert.Schemas.Alert{id: "1", instance: "example", message: "Test", timestamp: "2024-07-12T00:00:00Z", notify_at: "2024-07-13T00:00:00Z"}
-
-      iex> TempAlert.Storage.get_due_alerts(DateTime.utc_now())
-      [%TempAlert.Schemas.Alert{id: "1", instance: "example", message: "Test", timestamp: "2024-07-12T00:00:00Z", notify_at: "2024-07-13T00:00:00Z"}]
+  The `TempAlert.Storage` module provides a unified interface to interact with the storage backend,
+  which can be either in-memory using Agent or persistent using Redis.
   """
-  alias TempAlert.AlertsAgent
 
-  def add_alert(alert), do: AlertsAgent.add_alert(alert)
-  def get_alert(id), do: AlertsAgent.get_alert(id)
-  def get_all_alerts, do: AlertsAgent.get_all_alerts()
-  def delete_alert(id), do: AlertsAgent.delete_alert(id)
+  # @storage Application.compile_env(:temp_alert, :storage, TempAlert.Storage.AgentStorage)
 
-  def get_due_alerts(now) do
-    AlertsAgent.get_all_alerts()
-    |> Enum.filter(fn alert ->
-      {:ok, notify_at, _} = DateTime.from_iso8601(alert.notify_at)
-      DateTime.compare(notify_at, now) != :gt
-    end)
+  # IO.inspect(@storage, label: "Storage Backend")  # Debugging line
+
+  @doc """
+  Adds an alert to the storage.
+  """
+  def add_alert(alert), do: storage_backend().add_alert(alert)
+
+  @doc """
+  Retrieves an alert by its ID.
+  """
+  def get_alert(id), do: storage_backend().get_alert(id)
+
+  @doc """
+  Retrieves all alerts from the storage.
+  """
+  def get_all_alerts(_), do: storage_backend().get_all_alerts(nil)
+
+  @doc """
+  Deletes an alert by its ID.
+  """
+  def delete_alert(id), do: storage_backend().delete_alert(id)
+
+  @doc """
+  Retrieves due alerts based on the provided time.
+  """
+  def get_due_alerts(now), do: storage_backend().get_due_alerts(now)
+
+  defp storage_backend do
+    case System.get_env("TA_STORAGE_BACKEND") do
+      "redis" -> TempAlert.Storage.RedisStorage
+      _ -> TempAlert.Storage.AgentStorage
+    end
   end
 end
