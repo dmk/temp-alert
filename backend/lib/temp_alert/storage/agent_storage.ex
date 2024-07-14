@@ -6,24 +6,24 @@ defmodule TempAlert.Storage.AgentStorage do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
-  defimpl StorageProtocol do
-    def add_alert(alert) do
+  defimpl StorageProtocol, for: TempAlert.Storage.AgentStorage do
+    def add_alert(_storage, alert) do
       Agent.update(__MODULE__, &Map.put(&1, alert.id, alert))
     end
 
-    def get_alert(id) do
+    def get_alert(_storage, id) do
       Agent.get(__MODULE__, &Map.get(&1, id))
     end
 
-    def get_all_alerts(_) do
+    def get_all_alerts(_storage) do
       Agent.get(__MODULE__, &Map.values(&1))
     end
 
-    def delete_alert(id) do
+    def delete_alert(_storage, id) do
       Agent.update(__MODULE__, &Map.delete(&1, id))
     end
 
-    def get_due_alerts(now) do
+    def get_due_alerts(_storage, now) do
       Agent.get(__MODULE__, fn alerts ->
         Enum.filter(alerts, fn {_id, alert} ->
           {:ok, notify_at, _} = DateTime.from_iso8601(alert.notify_at)
