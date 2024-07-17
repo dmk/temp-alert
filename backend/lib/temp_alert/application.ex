@@ -15,7 +15,7 @@ defmodule TempAlert.Application do
       {Finch, name: TempAlert.Finch},
 
       # Start the Alerts Agent
-      TempAlert.AlertsAgent,
+      Application.get_env(:temp_alert, :storage),
 
       # Start the job sending alerts
       TempAlert.Jobs.SendAlerts,
