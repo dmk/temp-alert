@@ -51,10 +51,12 @@ config :phoenix, :json_library, Jason
 # Pick storage backend
 config :temp_alert, :storage, TempAlert.ConfigHelper.storage_backend()
 
-config :temp_alert, :redis,
-  host: System.get_env("TA_REDIS_HOST", "localhost"),
-  port: String.to_integer(System.get_env("TA_REDIS_PORT", "6379")),
-  password: System.get_env("TA_REDIS_PASSWORD")
+if System.get_env("TA_STORAGE_BACKEND") == "redis" do
+  config :temp_alert, :redis,
+    host: System.get_env("TA_REDIS_HOST", "localhost"),
+    port: String.to_integer(System.get_env("TA_REDIS_PORT", "6379")),
+    password: System.get_env("TA_REDIS_PASSWORD")
+end
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
