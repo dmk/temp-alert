@@ -47,7 +47,6 @@ defmodule TempAlert.Storage.AgentStorage do
   @behaviour TempAlert.StorageBehaviour
 
   use Agent
-  alias TempAlert.Schemas.Alert
 
   def start_link(_) do
     Agent.start_link(fn -> %{} end, name: __MODULE__)

@@ -49,6 +49,11 @@ defmodule TempAlert.Storage.RedisStorage do
   alias TempAlert.Schemas.Alert
   @redis_key "alerts"
 
+  @impl true
+  def init(init_arg) do
+    {:ok, init_arg}
+  end
+
   def start_link(_) do
     redix_config = Application.get_env(:temp_alert, :redis)
 
@@ -77,7 +82,7 @@ defmodule TempAlert.Storage.RedisStorage do
   def get_all_alerts do
     Redix.command!(__MODULE__, ["HGETALL", @redis_key])
     |> Enum.chunk_every(2)
-    |> Enum.map(fn [id, alert_json] -> Jason.decode!(alert_json, as: %Alert{}, keys: :atoms) end)
+    |> Enum.map(fn [_, alert_json] -> Jason.decode!(alert_json, as: %Alert{}, keys: :atoms) end)
   end
 
   @impl true
