@@ -1,4 +1,47 @@
 defmodule TempAlert.Storage.RedisStorage do
+  @moduledoc """
+  A storage module for TempAlert that uses Redis as the backend.
+
+  This module implements the `TempAlert.StorageBehaviour` and uses `Redix`
+  to interact with a Redis database for storing and retrieving alerts.
+
+  ## Configuration
+
+  The Redis connection details are expected to be provided in the application
+  environment under the `:temp_alert, :redis` key. For example:
+
+      config :temp_alert, :redis,
+        host: "localhost",
+        port: 6379,
+        password: "yourpassword"
+
+  ## Functions
+
+    - `start_link/1`: Starts the Redix connection.
+    - `add_alert/1`: Adds an alert to the Redis storage.
+    - `get_alert/1`: Retrieves a specific alert by its ID.
+    - `get_all_alerts/0`: Retrieves all alerts from the Redis storage.
+    - `delete_alert/1`: Deletes an alert from the Redis storage by its ID.
+    - `get_due_alerts/1`: Retrieves alerts that are due based on the provided timestamp.
+
+  ## Examples
+
+      iex> TempAlert.Storage.RedisStorage.add_alert(%TempAlert.Schemas.Alert{id: "1", instance: "example", message: "test alert", timestamp: DateTime.utc_now(), notify_at: DateTime.utc_now() |> DateTime.add(3600, :second) |> DateTime.to_iso8601()})
+      :ok
+
+      iex> TempAlert.Storage.RedisStorage.get_alert("1")
+      %TempAlert.Schemas.Alert{id: "1", instance: "example", message: "test alert", timestamp: DateTime.utc_now(), notify_at: DateTime.utc_now() |> DateTime.add(3600, :second) |> DateTime.to_iso8601()}
+
+      iex> TempAlert.Storage.RedisStorage.get_all_alerts()
+      [%TempAlert.Schemas.Alert{id: "1", instance: "example", message: "test alert", timestamp: DateTime.utc_now(), notify_at: DateTime.utc_now() |> DateTime.add(3600, :second) |> DateTime.to_iso8601()}]
+
+      iex> TempAlert.Storage.RedisStorage.delete_alert("1")
+      :ok
+
+      iex> TempAlert.Storage.RedisStorage.get_due_alerts(DateTime.utc_now())
+      [%TempAlert.Schemas.Alert{id: "1", instance: "example", message: "test alert", timestamp: DateTime.utc_now(), notify_at: DateTime.utc_now() |> DateTime.add(3600, :second) |> DateTime.to_iso8601()}]
+
+  """
   @behaviour TempAlert.StorageBehaviour
 
   use GenServer
