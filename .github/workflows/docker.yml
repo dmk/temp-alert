@@ -31,7 +31,10 @@ jobs:
       id: extract_tag
       run: |
         if [ "${{ github.ref_type }}" = "tag" ]; then
-          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          # Remove the 'v' prefix if it exists
+          TAG=${GITHUB_REF#refs/tags/}
+          TAG=${TAG#v}
+          echo "TAG=$TAG" >> $GITHUB_ENV
         else
           echo "TAG=latest" >> $GITHUB_ENV
         fi
