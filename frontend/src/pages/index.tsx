@@ -8,7 +8,10 @@ export default function Home() {
   return (
     <div className="main-container">
       <Navbar />
-      <Container sx={{mt: 3}}>
+      <Container sx={{
+        mt: 3,
+        flex: 1,
+      }}>
         <AlertList />
       </Container>
       <Footer />
