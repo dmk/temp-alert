@@ -27,7 +27,4 @@ docker-compose.yml
 *.iml
 
 # Ignore files used for local developmenmt
-package.json
-package-lock.json
-node_modules
 .dev
