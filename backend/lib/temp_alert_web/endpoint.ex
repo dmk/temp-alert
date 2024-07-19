@@ -29,7 +29,6 @@ defmodule TempAlertWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :temp_alert
 
     # Make sure the frontend can make API requests in development mode
     plug CORSPlug, origin: ["http://localhost:3000"]

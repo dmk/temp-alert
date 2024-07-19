@@ -31,8 +31,9 @@ defmodule TempAlertWeb.ConnCase do
     end
   end
 
-  setup tags do
-    TempAlert.DataCase.setup_sandbox(tags)
+  setup _tags do
+    # TODO: Figure out setup for Redis or whatever
+    # TempAlert.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

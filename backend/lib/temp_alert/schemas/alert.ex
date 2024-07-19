@@ -92,7 +92,7 @@ defmodule TempAlert.Schemas.Alert do
   @spec new(map()) :: %__MODULE__{}
   def new(attrs) do
     %__MODULE__{
-      id: attrs.id || UUID.uuid4(),
+      id: attrs.id || Ecto.UUID.generate(),
       instance: attrs.instance,
       message: attrs.message,
       timestamp: to_iso8601(attrs.timestamp || DateTime.utc_now()),

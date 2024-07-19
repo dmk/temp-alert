@@ -34,7 +34,7 @@ defmodule TempAlert.MixProject do
     [
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
-      {:ecto_sql, "~> 3.10"},
+      {:ecto, "~> 3.11"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:swoosh, "~> 1.5"},
@@ -49,7 +49,6 @@ defmodule TempAlert.MixProject do
       {:httpoison, "~> 2.2"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:redix, "~> 1.5"},
-      {:uuid, "~> 1.1"},
     ]
   end
 

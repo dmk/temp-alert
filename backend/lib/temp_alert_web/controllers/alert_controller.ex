@@ -8,11 +8,9 @@ defmodule TempAlertWeb.AlertController do
         "message" => message,
         "notify_at" => notify_at
       }) do
-    id = Ecto.UUID.generate()
     timestamp = DateTime.utc_now()
 
     alert = %Alert{
-      id: id,
       instance: instance,
       message: message,
       notify_at: notify_at,
