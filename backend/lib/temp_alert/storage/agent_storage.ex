@@ -75,11 +75,9 @@ defmodule TempAlert.Storage.AgentStorage do
   @impl true
   def get_due_alerts(now) do
     Agent.get(__MODULE__, fn alerts ->
-      Enum.filter(alerts, fn {_id, alert} ->
-        {:ok, notify_at, _} = DateTime.from_iso8601(alert.notify_at)
-        DateTime.compare(notify_at, now) != :gt
-      end)
-      |> Enum.map(fn {_id, alert} -> alert end)
+      alerts
+      |> Map.values()
+      |> Enum.filter(fn alert -> DateTime.before?(alert.notify_at, now) end)
     end)
   end
 end

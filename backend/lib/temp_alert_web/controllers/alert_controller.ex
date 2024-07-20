@@ -9,12 +9,14 @@ defmodule TempAlertWeb.AlertController do
         "notify_at" => notify_at
       }) do
     timestamp = DateTime.utc_now()
+    {:ok, notify_at, _} = DateTime.from_iso8601(notify_at)
 
     alert = %Alert{
+      id: Ecto.UUID.generate(),
       instance: instance,
       message: message,
       notify_at: notify_at,
-      timestamp: timestamp
+      timestamp: timestamp,
     }
 
     Storage.add_alert(alert)

@@ -95,8 +95,8 @@ defmodule TempAlert.Schemas.Alert do
       id: attrs.id || Ecto.UUID.generate(),
       instance: attrs.instance,
       message: attrs.message,
-      timestamp: to_iso8601(attrs.timestamp || DateTime.utc_now()),
-      notify_at: to_iso8601(attrs.notify_at),
+      timestamp: attrs.timestamp || DateTime.utc_now(),
+      notify_at: attrs.notify_at,
     }
   end
 end

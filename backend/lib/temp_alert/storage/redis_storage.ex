@@ -46,7 +46,6 @@ defmodule TempAlert.Storage.RedisStorage do
 
   use GenServer
 
-  alias TempAlert.Schemas.Alert
   @redis_key "alerts"
 
   @impl true
@@ -67,14 +66,14 @@ defmodule TempAlert.Storage.RedisStorage do
 
   @impl true
   def add_alert(alert) do
-    Redix.command!(__MODULE__, ["HSET", @redis_key, alert.id, Jason.encode!(alert)])
+    Redix.command!(__MODULE__, ["HSET", @redis_key, alert.id, :erlang.term_to_binary(alert)])
   end
 
   @impl true
   def get_alert(id) do
     case Redix.command!(__MODULE__, ["HGET", @redis_key, id]) do
       nil -> nil
-      alert_json -> Jason.decode!(alert_json, as: %Alert{}, keys: :atoms)
+      alert_json -> :erlang.binary_to_term(alert_json)
     end
   end
 
@@ -82,20 +81,20 @@ defmodule TempAlert.Storage.RedisStorage do
   def get_all_alerts do
     Redix.command!(__MODULE__, ["HGETALL", @redis_key])
     |> Enum.chunk_every(2)
-    |> Enum.map(fn [_, alert_json] -> Jason.decode!(alert_json, as: %Alert{}, keys: :atoms) end)
+    |> Enum.map(fn [_, alert_json] ->
+      :erlang.binary_to_term(alert_json)
+    end)
   end
 
   @impl true
   def delete_alert(id) do
+    IO.inspect("Deleting Alert ID=" <> id)
     Redix.command!(__MODULE__, ["HDEL", @redis_key, id])
   end
 
   @impl true
   def get_due_alerts(now) do
     get_all_alerts()
-    |> Enum.filter(fn alert ->
-      {:ok, notify_at, _} = DateTime.from_iso8601(alert.notify_at)
-      DateTime.compare(notify_at, now) != :gt
-    end)
+    |> Enum.filter(fn alert -> DateTime.before?(alert.notify_at, now) end)
   end
 end
