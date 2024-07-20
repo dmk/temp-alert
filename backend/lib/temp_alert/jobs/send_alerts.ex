@@ -66,12 +66,18 @@ defmodule TempAlert.Jobs.SendAlerts do
   end
 
   defp schedule_work do
-    Process.send_after(self(), :work, :timer.seconds(10))
+    Process.send_after(
+      self(),
+      :work,
+      :timer.seconds(Application.get_env(:temp_alert, :send_alerts_interval))
+    )
   end
 
   defp send_due_alerts do
     now = DateTime.utc_now()
     due_alerts = Storage.get_due_alerts(now)
+
+    Logger.info("Started sending alerts")
 
     Enum.each(due_alerts, fn alert ->
       {status, response} = Alertmanager.create_alert(alert)
@@ -79,9 +85,12 @@ defmodule TempAlert.Jobs.SendAlerts do
       case status do
         :ok ->
           Logger.info("Alert successfully sent to Alertmanager: #{inspect(alert)}")
+
         :error ->
           Logger.error("Failed to send alert to Alertmanager: #{inspect(response.reason)}")
       end
     end)
+
+    Logger.info("Finished sending alerts")
   end
 end
