@@ -1,15 +1,5 @@
 import Config
 
-# Configure your database
-config :temp_alert, TempAlert.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "temp_alert_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -62,9 +52,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-# Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false
 
 # Set Alertmanager API URL
 config :temp_alert, :alertmanager_url, "http://localhost:9093/"

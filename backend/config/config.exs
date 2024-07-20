@@ -16,10 +16,6 @@ defmodule TempAlert.ConfigHelper do
   end
 end
 
-config :temp_alert,
-  ecto_repos: [TempAlert.Repo],
-  generators: [timestamp_type: :utc_datetime]
-
 # Configures the endpoint
 config :temp_alert, TempAlertWeb.Endpoint,
   url: [host: "localhost"],
@@ -30,15 +26,6 @@ config :temp_alert, TempAlertWeb.Endpoint,
   ],
   pubsub_server: TempAlert.PubSub,
   live_view: [signing_salt: "a6wROBOU"]
-
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
-config :temp_alert, TempAlert.Mailer, adapter: Swoosh.Adapters.Local
 
 # Fetch the log level from the environment variable, default to :info if not set
 log_level =

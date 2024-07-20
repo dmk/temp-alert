@@ -9,12 +9,6 @@ config :temp_alert, TempAlertWeb.Endpoint,
   secret_key_base: "zUKN+DaoYObeeX5G054qajmGSzY4ECy4cMJzVdr7hJSetAe1qZCQ8NDfvfi+gtiX",
   server: false
 
-# In test we don't send emails
-config :temp_alert, TempAlert.Mailer, adapter: Swoosh.Adapters.Test
-
-# Disable swoosh api client as it is only required for production adapters
-config :swoosh, :api_client, false
-
 # Print only warnings and errors during test
 config :logger, level: :warning
 
