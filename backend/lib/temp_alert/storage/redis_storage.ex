@@ -88,7 +88,6 @@ defmodule TempAlert.Storage.RedisStorage do
 
   @impl true
   def delete_alert(id) do
-    IO.inspect("Deleting Alert ID=" <> id)
     Redix.command!(__MODULE__, ["HDEL", @redis_key, id])
   end
 

@@ -24,6 +24,8 @@ defmodule TempAlert.Jobs.SendAlerts do
   alias TempAlert.Storage
   alias TempAlert.Utils.Alertmanager
 
+  require Logger
+
   @doc """
   Starts the GenServer.
 
@@ -72,7 +74,14 @@ defmodule TempAlert.Jobs.SendAlerts do
     due_alerts = Storage.get_due_alerts(now)
 
     Enum.each(due_alerts, fn alert ->
-      Alertmanager.create_alert(alert)
+      {status, response} = Alertmanager.create_alert(alert)
+
+      case status do
+        :ok ->
+          Logger.info("Alert successfully sent to Alertmanager: #{inspect(alert)}")
+        :error ->
+          Logger.error("Failed to send alert to Alertmanager: #{inspect(response.reason)}")
+      end
     end)
   end
 end
