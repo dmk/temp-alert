@@ -20,7 +20,7 @@ defmodule TempAlertWeb.Endpoint do
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/",
+    at: Application.compile_env(:temp_alert, :base_path),
     from: :temp_alert,
     gzip: false,
     only: ~w(_next css fonts images js favicon.ico robots.txt index.html 404.html)

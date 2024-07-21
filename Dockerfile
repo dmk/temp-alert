@@ -1,8 +1,12 @@
+ARG TA_BASE_PATH="/"
+
 # Stage 1: Build Next.js frontend
 FROM node:19-alpine AS build-frontend
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
+ARG TA_BASE_PATH
+ENV TA_BASE_PATH=${TA_BASE_PATH}
 COPY frontend .
 RUN npm run build
 
@@ -12,8 +16,11 @@ RUN apk add --no-cache build-base npm git
 WORKDIR /app
 COPY backend/mix.exs backend/mix.lock ./
 ENV MIX_ENV=prod
+ARG TA_BASE_PATH
+ENV TA_BASE_PATH=${TA_BASE_PATH}
 RUN mix do local.hex --force, local.rebar --force, deps.get --only prod, deps.compile
 COPY backend .
+RUN echo "TA_BASE_PATH \$TA_BASE_PATH"
 RUN mix compile
 
 # Stage 3: Final image

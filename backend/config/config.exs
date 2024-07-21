@@ -27,6 +27,10 @@ config :temp_alert, TempAlertWeb.Endpoint,
   pubsub_server: TempAlert.PubSub,
   live_view: [signing_salt: "a6wROBOU"]
 
+# Set base path
+IO.inspect(System.get_env("TA_BASE_PATH", "/"), label: "TA_BASE_PATH")
+config :temp_alert, :base_path, System.get_env("TA_BASE_PATH", "/")
+
 # Fetch the log level from the environment variable, default to :info if not set
 log_level =
   System.get_env("TA_LOG_LEVEL", "info")

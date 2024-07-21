@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { Alert } from '@/types/alert';
+import { getApiUrl } from '@/utils/api';
 
 const CreateAlertForm: React.FC = () => {
   const [instance, setInstance] = useState<string>('');
@@ -18,12 +19,12 @@ const CreateAlertForm: React.FC = () => {
   const createAlert = async () => {
     setLoading(true);
     try {
-      await axios.post<Alert>('/api/v1/alerts', {
+      await axios.post<Alert>(getApiUrl('/alerts'), {
         instance,
         message,
         notify_at: new Date(notifyAt).toISOString(),
       });
-      mutate('/api/v1/alerts');
+      mutate(getApiUrl('/alerts'));
       setInstance('');
       setMessage('');
       setNotifyAt('');

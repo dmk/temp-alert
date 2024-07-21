@@ -4,6 +4,7 @@ import { mutate } from 'swr';
 
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { getApiUrl } from '@/utils/api';
 
 interface DeleteButtonProps {
   id: string;
@@ -12,8 +13,8 @@ interface DeleteButtonProps {
 const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/v1/alerts/${id}`);
-      mutate('/api/v1/alerts');
+      await axios.delete(getApiUrl(`/alerts/${id}`));
+      mutate(getApiUrl('/alerts'));
     } catch (err) {
       console.error(err);
     }

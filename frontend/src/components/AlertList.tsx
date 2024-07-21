@@ -9,6 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Alert } from '@/types/alert';
 import DeleteButton from './DeleteButton';
+import { getApiUrl } from '@/utils/api';
 
 const fetcher = async (url: string): Promise<Alert[]> => {
   const response = await axios.get<Alert[]>(url);
@@ -16,7 +17,7 @@ const fetcher = async (url: string): Promise<Alert[]> => {
 };
 
 const AlertList: React.FC = () => {
-  const { data, error } = useSWR<Alert[]>('/api/v1/alerts', fetcher);
+  const { data, error } = useSWR<Alert[]>(getApiUrl('/alerts'), fetcher);
 
   if (error) return <Typography color="error">Failed to load</Typography>;
   if (!data) return <Typography>Loading...</Typography>;

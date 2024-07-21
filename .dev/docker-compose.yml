@@ -24,7 +24,12 @@ services:
       - redis_data:/data
 
   temp-alert:
-    build: ..
+    build:
+      context:
+        ..
+      # args:
+      #   TA_BASE_PATH: /temp-alert
+
     container_name: temp-alert
     ports:
       - "4000:4000"
@@ -34,6 +39,7 @@ services:
       TA_ALERTMANAGER_URL: http://alertmanager:9093/
       TA_STORAGE_BACKEND: redis
       TA_REDIS_HOST: redis
+      TA_BASE_PATH: /
 
 volumes:
   redis_data:
