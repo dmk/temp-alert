@@ -37,9 +37,12 @@ services:
       # yeah it's just for development no worries
       TA_SECRET_KEY_BASE: yNzhTd/NjNSCeo9bGt/073Dj0ut/t87kfQ0jTddrtoeiB7MObdYo/AdpaiKS0xCl
       TA_ALERTMANAGER_URL: http://alertmanager:9093/
-      TA_STORAGE_BACKEND: redis
-      TA_REDIS_HOST: redis
-      TA_BASE_PATH: /
+      TA_STORAGE_BACKEND: file
+      # TA_REDIS_HOST: redis
+      TA_FILE_STORAGE_PATH: /temp-alert-data
+    volumes:
+      - temp_alert_data:/temp-alert-data
 
 volumes:
   redis_data:
+  temp_alert_data:

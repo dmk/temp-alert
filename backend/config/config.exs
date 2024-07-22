@@ -11,6 +11,7 @@ defmodule TempAlert.ConfigHelper do
   def storage_backend do
     case System.get_env("TA_STORAGE_BACKEND") do
       "redis" -> TempAlert.Storage.RedisStorage
+      "file" -> TempAlert.Storage.FileStorage
       _ -> TempAlert.Storage.AgentStorage
     end
   end
@@ -28,7 +29,6 @@ config :temp_alert, TempAlertWeb.Endpoint,
   live_view: [signing_salt: "a6wROBOU"]
 
 # Set base path
-IO.inspect(System.get_env("TA_BASE_PATH", "/"), label: "TA_BASE_PATH")
 config :temp_alert, :base_path, System.get_env("TA_BASE_PATH", "/")
 
 # Fetch the log level from the environment variable, default to :info if not set
@@ -50,11 +50,18 @@ config :phoenix, :json_library, Jason
 # Pick storage backend
 config :temp_alert, :storage, TempAlert.ConfigHelper.storage_backend()
 
-if System.get_env("TA_STORAGE_BACKEND") == "redis" do
-  config :temp_alert, :redis,
-    host: System.get_env("TA_REDIS_HOST", "localhost"),
-    port: String.to_integer(System.get_env("TA_REDIS_PORT", "6379")),
-    password: System.get_env("TA_REDIS_PASSWORD")
+case System.get_env("TA_STORAGE_BACKEND") do
+  "redis" ->
+    config :temp_alert, :redis,
+      host: System.get_env("TA_REDIS_HOST", "localhost"),
+      port: String.to_integer(System.get_env("TA_REDIS_PORT", "6379")),
+      password: System.get_env("TA_REDIS_PASSWORD")
+
+  "file" ->
+    config :temp_alert, file_storage_path: System.get_env("TA_FILE_STORAGE_PATH", "data")
+
+  _ ->
+    nil
 end
 
 config :temp_alert,
