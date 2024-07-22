@@ -128,7 +128,7 @@ defmodule TempAlert.Utils.Alertmanager do
     payload = prepare_payload(alert)
 
     HTTPoison.post(
-      URI.merge(alertmanager_url, "/api/v2/alerts"),
+      URI.merge(alertmanager_url, "api/v2/alerts"),
       Jason.encode!([payload]),
       [{"Content-Type", "application/json"}]
     )
