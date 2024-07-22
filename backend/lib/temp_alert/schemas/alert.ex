@@ -14,7 +14,6 @@ defmodule TempAlert.Schemas.Alert do
 
   ## Functions
 
-    - `to_iso8601/1`: Converts a DateTime or ISO8601 string to an ISO8601 string.
     - `new/1`: Creates a new Alert struct and ensures all datetime fields are in ISO8601 format.
 
   ## Examples
@@ -40,35 +39,15 @@ defmodule TempAlert.Schemas.Alert do
              :instance,
              :message,
              :timestamp,
-             :notify_at,
+             :notify_at
            ]}
   defstruct [
     :id,
     :instance,
     :message,
     :timestamp,
-    :notify_at,
+    :notify_at
   ]
-
-  @doc """
-  Converts a DateTime or ISO8601 string to an ISO8601 string.
-
-  ## Examples
-
-      iex> TempAlert.Schemas.Alert.to_iso8601(~U[2024-07-11 18:43:00Z])
-      "2024-07-11T18:43:00Z"
-
-      iex> TempAlert.Schemas.Alert.to_iso8601("2024-07-11T18:43:00.000Z")
-      "2024-07-11T18:43:00.000Z"
-  """
-  @spec to_iso8601(DateTime.t() | String.t()) :: String.t()
-  def to_iso8601(datetime) when is_binary(datetime) do
-    datetime
-  end
-
-  def to_iso8601(%DateTime{} = datetime) do
-    DateTime.to_iso8601(datetime)
-  end
 
   @doc """
   Creates a new Alert struct and ensures all datetime fields are in ISO8601 format.
@@ -92,11 +71,11 @@ defmodule TempAlert.Schemas.Alert do
   @spec new(map()) :: %__MODULE__{}
   def new(attrs) do
     %__MODULE__{
-      id: attrs.id || Ecto.UUID.generate(),
+      id: Map.get(attrs, :id, Ecto.UUID.generate()),
       instance: attrs.instance,
       message: attrs.message,
-      timestamp: attrs.timestamp || DateTime.utc_now(),
-      notify_at: attrs.notify_at,
+      timestamp: Map.get(attrs, :timestamp, DateTime.utc_now()),
+      notify_at: attrs.notify_at
     }
   end
 end
