@@ -3,6 +3,8 @@ ARG TA_BASE_PATH="/"
 # Stage 1: Build Next.js frontend
 FROM node:19-alpine AS build-frontend
 WORKDIR /app/frontend
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
 ARG TA_BASE_PATH
