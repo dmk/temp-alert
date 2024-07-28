@@ -31,6 +31,9 @@ config :temp_alert, TempAlertWeb.Endpoint,
 # Set base path
 config :temp_alert, :base_path, System.get_env("TA_BASE_PATH", "/")
 
+# App url, to  be used in alerts
+config :temp_alert, :app_url, System.get_env("TA_APP_URL", "http://localhost:4000/")
+
 # Fetch the log level from the environment variable, default to :info if not set
 log_level =
   System.get_env("TA_LOG_LEVEL", "info")

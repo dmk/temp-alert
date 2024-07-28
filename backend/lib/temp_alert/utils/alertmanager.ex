@@ -92,7 +92,7 @@ defmodule TempAlert.Utils.Alertmanager do
       },
       "startsAt" => DateTime.to_iso8601(alert.notify_at),
       "endsAt" => DateTime.to_iso8601(DateTime.add(alert.notify_at, 1, :hour)),
-      "generatorURL" => "http://example.com"
+      "generatorURL" => Application.get_env(:temp_alert, :app_url)
     }
   end
 
